@@ -8,16 +8,17 @@ const router = useRouter();
 // not required however as they are 100% exposed on the client side anyway
 // and that's ok, Supabase expects this (security is provided by Row Level Security)
 const supabaseUrl = "https://uaqzqqxxdevbotrtgbst.supabase.co";
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVhcXpxcXh4ZGV2Ym90cnRnYnN0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjczNzExMTQsImV4cCI6MTk4Mjk0NzExNH0.23UEnQA3dJNTgN8Ae4_YPPHvrIktkVdzc-vhQgqQIy4";
+const supabaseKey =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVhcXpxcXh4ZGV2Ym90cnRnYnN0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2NjczNzExMTQsImV4cCI6MTk4Mjk0NzExNH0.23UEnQA3dJNTgN8Ae4_YPPHvrIktkVdzc-vhQgqQIy4";
 
 // setup client
 const supabase: any = createClient(supabaseUrl, supabaseKey);
 
 // setup auth state listener
 supabase.auth.onAuthStateChange((event: any, session: any) => {
-  console.log('onAuthStateChange', event, session)
+  console.log("onAuthStateChange", event, session);
   if (event === "PASSWORD_RECOVERY") {
-    router.push({ name: "PasswordReset" })
+    router.push({ name: "PasswordReset" });
   }
   // the "event" is a string indicating what trigger the state change (ie. SIGN_IN, SIGN_OUT, etc)
   // the session contains info about the current session most importanly the user dat
