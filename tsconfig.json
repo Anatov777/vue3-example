@@ -1,14 +1,22 @@
 {
   "extends": "@vue/tsconfig/tsconfig.web.json",
-  "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
+  "include": [
+    "env.d.ts",
+    "src/**/*",
+    "src/**/*.vue"
+  ],
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ]
     },
-    "lib": [ "es2020" ],
+    "lib": [
+      "es2020",
+      "DOM"
+    ],
   },
-
   "references": [
     {
       "path": "./tsconfig.config.json"

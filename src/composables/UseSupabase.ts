@@ -16,7 +16,7 @@ const supabase: any = createClient(supabaseUrl, supabaseKey);
 
 // setup auth state listener
 supabase.auth.onAuthStateChange((event: any, session: any) => {
-  console.log("onAuthStateChange", event, session);
+  // console.log("onAuthStateChange", event, session);
   if (event === "PASSWORD_RECOVERY") {
     router.push({ name: "PasswordReset" });
   }

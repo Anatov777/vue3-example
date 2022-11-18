@@ -12,5 +12,5 @@ button {
   @apply bg-blue-600 rounded py-2 px-5 block w-full border-blue-800 border-2 text-white;
 }
 label {
-  @apply mb-5 block;
+  @apply mb-1 block;
 }
