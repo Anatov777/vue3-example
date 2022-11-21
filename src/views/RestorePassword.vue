@@ -16,7 +16,6 @@ const handlePasswordUpdate = async () => {
   }
 };
 const onUpdatePasswordConfirmationFormValidation = (isValid: boolean) => {
-  console.log("isValid", isValid);
   isValidForm.value = isValid;
 };
 </script>
