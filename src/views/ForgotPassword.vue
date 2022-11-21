@@ -1,21 +1,55 @@
 <script setup lang="ts">
 import useAuthUser from "@/composables/UseAuthUser";
-import { ref } from "vue";
-// use necessary composables
+import { ref, reactive, computed } from "vue";
+
+import { useVuelidate } from "@vuelidate/core";
+import { helpers, required, email } from "@vuelidate/validators";
+
+import BaseInput from "@/components/forms/BaseInput.vue";
+
 const { sendPasswordRestEmail } = useAuthUser();
-// keep up with email
-const email = ref("");
-// function to call on submit of the form
-// triggers sending the reset email to the user
+
+const form = ref({
+  email: "",
+});
+
+const rules = computed(() => ({
+  form: {
+    email: {
+      required: helpers.withMessage("Поле не заполнено", required),
+      email: helpers.withMessage("Неверный формат Email", email),
+    },
+  },
+}));
+
+const state = reactive({
+  form,
+});
+const v$ = useVuelidate(rules, state);
+
 const handlePasswordReset = async () => {
-  await sendPasswordRestEmail(email.value);
-  alert(`Password reset email sent to: ${email.value}`);
+  try {
+    const isValidForm = await v$.value.$validate();
+    if (isValidForm) {
+      await sendPasswordRestEmail(form.value.email);
+      alert(`Password reset email sent to: ${form.value.email}`);
+    }
+  } catch (error: any) {
+    alert(error.message);
+  }
 };
 </script>
 <template>
   <form class="max-w-lg m-auto" @submit.prevent="handlePasswordReset()">
-    <h1 class="text-3xl mb-5">Forgot Password?</h1>
-    <label>Email <input v-model="email" type="email" /></label>
-    <button>Send Reset Email</button>
+    <h1 class="text-3xl mb-5">Забыли пароль?</h1>
+    <BaseInput
+      v-model="form.email"
+      label="Email"
+      input-type="email"
+      :errors="v$.form.email.$silentErrors"
+      :has-error="v$.form.email.$error"
+      @blur="v$.form.email.$touch()"
+    />
+    <button class="mt-10">Отправить письмо для сброса</button>
   </form>
 </template>

@@ -26,6 +26,6 @@ const onUpdatePasswordConfirmationFormValidation = (isValid: boolean) => {
       v-model:newPassword="newPassword"
       @update:isValid="onUpdatePasswordConfirmationFormValidation($event)"
     />
-    <button>Сохранить</button>
+    <button class="mt-10">Сохранить</button>
   </form>
 </template>

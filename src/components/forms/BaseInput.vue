@@ -41,7 +41,6 @@ const onInput = async (event: InputEvent | Event) => {
   emit("update:modelValue", input.value);
 };
 const onBlur = async (event: FocusEvent) => {
-  console.log("BLUR");
   emit("blur", event);
 };
 </script>

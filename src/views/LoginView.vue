@@ -1,21 +1,49 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed, reactive } from "vue";
 import useAuthUser from "@/composables/UseAuthUser";
 import { useRouter } from "vue-router";
-// Use necessary composables
+
+import { useVuelidate } from "@vuelidate/core";
+import { helpers, required, minLength, email } from "@vuelidate/validators";
+
+import BaseInput from "@/components/forms/BaseInput.vue";
+
 const router = useRouter();
 const { login } = useAuthUser();
-// keep up with form data
+
 const form = ref({
   email: "",
   password: "",
 });
-// call the proper login method from the AuthUser composable
-// on the submit of the form
+
+const rules = computed(() => ({
+  form: {
+    email: {
+      required: helpers.withMessage("Поле не заполнено", required),
+      email: helpers.withMessage("Неверный формат Email", email),
+    },
+    password: {
+      required: helpers.withMessage("Поле не заполнено", required),
+      minLength: helpers.withMessage(
+        "Пароль должен быть минимум из 6-ти символов",
+        minLength(6)
+      ),
+    },
+  },
+}));
+
+const state = reactive({
+  form,
+});
+const v$ = useVuelidate(rules, state);
+
 const handleLogin = async () => {
   try {
-    await login(form.value);
-    router.push({ name: "Profile" });
+    const isValidForm = await v$.value.$validate();
+    if (isValidForm) {
+      await login(form.value);
+      router.push({ name: "Profile" });
+    }
   } catch (error: any) {
     alert(error.message);
   }
@@ -24,11 +52,25 @@ const handleLogin = async () => {
 <template>
   <div class="max-w-lg m-auto">
     <form @submit.prevent="handleLogin()">
-      <h1 class="text-3xl mb-5">Login</h1>
-      <label>Email <input v-model="form.email" type="email" /></label>
-      <label>Password <input v-model="form.password" type="password" /></label>
-      <button>Login</button>
-      <router-link to="/forgotPassword">Forgot Password?</router-link>
+      <h1 class="text-3xl mb-5">Вход</h1>
+      <BaseInput
+        v-model="form.email"
+        label="Email"
+        input-type="email"
+        :errors="v$.form.email.$silentErrors"
+        :has-error="v$.form.email.$error"
+        @blur="v$.form.email.$touch()"
+      />
+      <BaseInput
+        v-model="form.password"
+        label="Пароль"
+        input-type="password"
+        :errors="v$.form.password.$silentErrors"
+        :has-error="v$.form.password.$error"
+        @blur="v$.form.password.$touch()"
+      />
+      <button class="mt-10 mb-5">Войти</button>
+      <router-link to="/forgotPassword">Забыли пароль?</router-link>
     </form>
   </div>
 </template>

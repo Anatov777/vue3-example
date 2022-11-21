@@ -16,8 +16,8 @@ const form = ref({
   name: "",
   email: "",
   password: "",
-  isValidPassword: false,
 });
+const isValidPassword = ref(false);
 
 const rules = computed(() => ({
   form: {
@@ -43,7 +43,7 @@ const v$ = useVuelidate(rules, state);
 const handleSubmit = async () => {
   try {
     const isValidForm = await v$.value.$validate();
-    if (isValidForm && form.value.isValidPassword) {
+    if (isValidForm && isValidPassword.value) {
       await register(form.value);
       router.push({
         name: "EmailConfirmation",
@@ -55,7 +55,7 @@ const handleSubmit = async () => {
   }
 };
 const onUpdatePasswordConfirmationFormValidation = (isValid: boolean) => {
-  form.value.isValidPassword = isValid;
+  isValidPassword.value = isValid;
 };
 </script>
 <template>
@@ -81,6 +81,6 @@ const onUpdatePasswordConfirmationFormValidation = (isValid: boolean) => {
       v-model:newPassword="form.password"
       @update:isValid="onUpdatePasswordConfirmationFormValidation($event)"
     />
-    <button>Зарегистрироваться</button>
+    <button class="mt-10">Зарегистрироваться</button>
   </form>
 </template>
