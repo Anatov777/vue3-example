@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref, reactive, computed } from "vue";
+import { ref, reactive, computed, watch } from "vue";
 import type { Ref } from "vue";
 
 import { useVuelidate } from "@vuelidate/core";
-import { helpers, required, sameAs } from "@vuelidate/validators";
+import { helpers, required, sameAs, minLength } from "@vuelidate/validators";
 
 import BaseInput from "@/components/forms/BaseInput.vue";
 
@@ -13,6 +13,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (event: "update:newPassword", value: string): void;
+  (event: "update:isValid", value: boolean): void;
 }>();
 
 const newPasswordModel: Ref<string> = ref(props.newPassword);
@@ -21,6 +22,10 @@ const newPasswordRepeatModel: Ref<string> = ref("");
 const rules = computed(() => ({
   newPasswordModel: {
     required: helpers.withMessage("Поле не заполнено", required),
+    minLength: helpers.withMessage(
+      "Пароль должен быть минимум из 6-ти символов",
+      minLength(6)
+    ),
   },
   newPasswordRepeatModel: {
     required: helpers.withMessage("Поле не заполнено", required),
@@ -37,13 +42,22 @@ const state = reactive({
 });
 const v$ = useVuelidate(rules, state);
 
+watch(
+  v$,
+  (newValue, oldValue) => {
+    if (newValue.$invalid !== oldValue?.$invalid) {
+      emit("update:isValid", !newValue.$invalid);
+    }
+  },
+  { immediate: true }
+);
+
 const onInput = (event: any): void => {
   emit("update:newPassword", event);
 };
 </script>
 
 <template>
-  {{ v$.newPasswordRepeatModel }}
   <BaseInput
     v-model="newPasswordModel"
     label="Пароль"
