@@ -1,0 +1,36 @@
+@import 'forms.pcss';
+@import 'text.pcss';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-image: linear-gradient(
+    to left,
+    rgba(156, 214, 148, 1) 0%,
+    rgba(178, 231, 170, 1) 50%,
+    rgba(156, 214, 148, 1) 100%
+  );
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+input,
+textarea {
+  @apply shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight;
+  @apply focus:outline-none focus:border focus:border-lime-500;;
+  background-color: ##efefef;
+}
+
+button {
+  @apply rounded-3xl py-3 px-5 block w-full text-white;
+  background-color: rgb(104,210,162);
+  transition: all 0.3s ease-in-out;
+  &:hover {
+    box-shadow: 0 5px 5px 0 rgb(87 184 70 / 50%);
+  }
+}
+label {
+  @apply mb-1 block;
+}

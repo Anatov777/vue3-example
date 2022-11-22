@@ -40,7 +40,7 @@ const handlePasswordReset = async () => {
 };
 </script>
 <template>
-  <form class="max-w-lg m-auto" @submit.prevent="handlePasswordReset()">
+  <form class="form-base" @submit.prevent="handlePasswordReset()">
     <h1 class="text-3xl mb-5">Забыли пароль?</h1>
     <BaseInput
       v-model="form.email"

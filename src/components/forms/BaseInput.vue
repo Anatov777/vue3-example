@@ -1,47 +1,48 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
-import type { Ref } from "vue";
-import { v4 as uuidv4 } from "uuid";
+import { ref, computed } from 'vue';
+import type { Ref } from 'vue';
+import { v4 as uuidv4 } from 'uuid';
 
-type InputType = "text" | "number" | "tel" | "email" | "password";
+type InputType = 'text' | 'number' | 'tel' | 'email' | 'password';
 
 interface Props {
   id?: string;
   modelValue?: any;
   label: string;
   inputType?: InputType;
+  placeholderText?: string;
   hasError: boolean;
   errors: any[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: null,
-  label: "",
-  inputType: "text",
+  label: '',
+  inputType: 'text',
   hasError: false,
   errors: [] as any,
 });
 
 const emit = defineEmits<{
-  (event: "update:modelValue", inputValue: any): void;
-  (event: "blur", value: any): void;
+  (event: 'update:modelValue', inputValue: any): void;
+  (event: 'blur', value: any): void;
 }>();
 
 const isShowPassword: Ref<boolean> = ref(false);
 
 const initInputType = computed<string>(() => {
-  if (props.inputType === "password") {
-    return isShowPassword.value ? "text" : "password";
+  if (props.inputType === 'password') {
+    return isShowPassword.value ? 'text' : 'password';
   }
   return props.inputType;
 });
 
 const onInput = async (event: InputEvent | Event) => {
   const input = event.target as HTMLInputElement;
-  emit("update:modelValue", input.value);
+  emit('update:modelValue', input.value);
 };
 const onBlur = async (event: FocusEvent) => {
-  emit("blur", event);
+  emit('blur', event);
 };
 </script>
 <script lang="ts">
@@ -65,6 +66,7 @@ export default {
           :class="{ error: hasError }"
           :value="modelValue"
           :type="initInputType"
+          :placeholder="placeholderText"
           v-bind="$attrs"
           @input="onInput($event)"
           @blur="onBlur($event)"
