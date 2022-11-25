@@ -52,7 +52,7 @@ const handleLogin = async () => {
 <template>
   <div>
     <form class="form-base" @submit.prevent="handleLogin()">
-      <h1 class="text-3xl mb-5">Вход</h1>
+      <h1 class="form-title">Вход</h1>
       <BaseInput
         v-model="form.email"
         label="Email"

@@ -60,7 +60,7 @@ const onUpdatePasswordConfirmationFormValidation = (isValid: boolean) => {
 </script>
 <template>
   <form class="form-base" @submit.prevent="handleSubmit">
-    <h1 class="text-3xl mb-5">Регистрация</h1>
+    <h1 class="form-title">Регистрация</h1>
     <BaseInput
       v-model="form.name"
       label="Имя"

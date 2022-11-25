@@ -21,7 +21,7 @@ const onUpdatePasswordConfirmationFormValidation = (isValid: boolean) => {
 </script>
 <template>
   <form class="form-base" @submit.prevent="handlePasswordUpdate()">
-    <h1 class="text-3xl mb-5">Введите новый пароль</h1>
+    <h1 class="form-title">Введите новый пароль</h1>
     <PasswordConfirmationFieldGroup
       v-model:newPassword="newPassword"
       @update:isValid="onUpdatePasswordConfirmationFormValidation($event)"
