@@ -16,8 +16,12 @@ const { isLoggedIn } = useAuthUser();
         </router-link>
       </li>
     </ul>
-    <ul v-if="isLoggedIn()" class="flex gap-5 bg-gray-700 p-5">
-      <li><router-link :to="{ name: 'Logout' }">Logout</router-link></li>
+    <ul v-if="isLoggedIn()" class="header__list">
+      <li class="header__list-item">
+        <router-link :to="{ name: 'Logout' }" class="header__link">
+          Выйти
+        </router-link>
+      </li>
     </ul>
     <ul v-else class="header__list">
       <li class="header__list-item">

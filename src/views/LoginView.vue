@@ -48,6 +48,17 @@ const handleLogin = async () => {
     alert(error.message);
   }
 };
+const loginAsGuest = async () => {
+  try {
+    await login({
+      email: 'testsupabase@gmail.com',
+      password: 'test12345',
+    });
+    router.push({ name: 'Profile' });
+  } catch (error: any) {
+    alert(error.message);
+  }
+};
 </script>
 <template>
   <div>
@@ -70,7 +81,10 @@ const handleLogin = async () => {
         @blur="v$.form.password.$touch()"
       />
       <button class="mt-10 mb-5">Войти</button>
-      <router-link to="/forgotPassword" class="link-primary">Забыли пароль?</router-link>
+      <router-link to="/forgotPassword" class="link-primary">
+        Забыли пароль?
+      </router-link>
+      <div class="link-primary text-xs max-w-fit ml-auto" @click="loginAsGuest">Войти как гость</div>
     </form>
   </div>
 </template>

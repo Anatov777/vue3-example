@@ -52,7 +52,8 @@ const currentList = computed<any[]>(() => {
       <img
         :src="`https://cataas.com/cat/${item[id]}`"
         width="300"
-        height="300"
+        height="400"
+        class="preloader"
       />
     </div>
   </div>
@@ -66,11 +67,22 @@ const currentList = computed<any[]>(() => {
   flex-wrap: wrap;
   gap: 20px;
 
+  @media (min-width: 768px) {
+    justify-content: space-between;
+  }
+
   &__item {
-    flex: 0 0 calc(50% - 20px);
+    flex: 0 0 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    border: 2px solid gray;
+    @apply border-solid border-2 rounded-3xl border-lime-400 bg-stone-200 p-5;
+
+    @media (min-width: 768px) {
+      flex: 0 0 calc(50% - 20px);
+      max-width: none;
+    }
 
     img {
       object-fit: contain;

@@ -47,7 +47,7 @@ const onPageClick = (page: number) => {
   gap: 5px;
   &__item {
     padding: 5px;
-    border: 2px solid gray;
+    border: 1px solid rgb(78, 78, 78);
     background-color: #fff;
     min-width: 40px;
     display: flex;
@@ -56,10 +56,10 @@ const onPageClick = (page: number) => {
     cursor: pointer;
     transition: all 0.3s ease-in-out;
     &:hover {
-      background-color: gray;
+      background-color: #dddddd;
     }
     &.active {
-      background-color: green;
+      @apply bg-cyan-400 text-cyan-50 border-cyan-600;
     }
   }
 }
