@@ -2,12 +2,18 @@
 import useAuthUser from '@/composables/UseAuthUser';
 import BurgerMenu from '@/components/BurgerMenu.vue';
 
-import { ref, watch } from 'vue';
+import { computed } from 'vue';
 import type { Ref } from 'vue';
+import { inject } from 'vue';
 
-const isShowBurgerMenu: Ref<boolean> = ref(false);
+const clientWidth: Ref<number | null> | undefined = inject('clientWidth')
 
-console.log(this)
+const isShowBurgerMenu = computed<boolean>(() => {
+  if (clientWidth && clientWidth.value! < 640) {
+    return true
+  }
+  return false;
+});
 
 const { isLoggedIn } = useAuthUser();
 </script>
