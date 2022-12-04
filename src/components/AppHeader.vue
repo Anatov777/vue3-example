@@ -29,7 +29,7 @@ const { isLoggedIn } = useAuthUser();
             Главная
           </router-link>
         </li>
-        <li class="header__list-item">
+        <li v-if="!isShowBurgerMenu" class="header__list-item">
           <router-link :to="{ name: 'Profile' }" class="header__link">
             Профиль
           </router-link>

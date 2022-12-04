@@ -2,6 +2,8 @@
 import { computed, ref, watch } from 'vue';
 import type { Ref } from 'vue';
 
+import router from '@/router/index';
+
 interface Props {
   list: any[];
   id?: string;
@@ -18,15 +20,37 @@ const props = withDefaults(defineProps<Props>(), {
 
 const catalogElement: Ref<HTMLDivElement | null> = ref(null);
 
+const emit = defineEmits<{
+  (event: 'update:currentPage', value: number): void;
+}>();
+
 watch(
   () => props.currentPage,
   () => {
+    if (props.currentPage !== Number(router.currentRoute.value.query.page)) {
+      router.push({
+        path: router.currentRoute.value.path,
+        query: {
+          page: props.currentPage,
+        },
+      });
+    }
     if (catalogElement.value) {
       catalogElement.value.scrollIntoView({
         behavior: 'smooth',
       });
     }
   }
+);
+
+watch(
+  () => router.currentRoute.value.query.page,
+  (newPage: string | undefined | any) => {
+    if (props.currentPage !== Number(newPage)) {
+      emit('update:currentPage', Number(newPage));
+    }
+  },
+  { deep: true, immediate: true }
 );
 
 const currentList = computed<any[]>(() => {

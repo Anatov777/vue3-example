@@ -1,7 +1,7 @@
 export default function useCataas() {
   const getCats = async () => {
     try {
-      const url = 'https://cataas.com/api/cats?limit=21';
+      const url = 'https://cataas.com/api/cats?limit=1000';
       let response = await fetch(url);
       return response.json()
     } catch (error: any) {
