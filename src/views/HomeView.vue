@@ -5,6 +5,10 @@ import useCataas from '@/composables/useCataas';
 import CatalogList from '@/components/catalog/CatalogList.vue';
 import PaginationBar from '@/components/catalog/PaginationBar.vue';
 
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
+
 const { getCats } = useCataas();
 
 const cats: Ref<any[]> = ref([]);
@@ -16,6 +20,9 @@ const lastPage = computed<number>(() => {
 });
 
 onMounted(async () => {
+  if (route.query.page) {
+    currentPage.value = Number(route.query.page);
+  }
   cats.value = await getCats();
 });
 </script>

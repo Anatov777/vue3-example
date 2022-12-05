@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import type { Ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import type { LocationQuery  } from 'vue-router';
 
-import router from '@/router/index';
+const route = useRoute()
+const router = useRouter()
 
 interface Props {
   list: any[];
@@ -27,12 +30,17 @@ const emit = defineEmits<{
 watch(
   () => props.currentPage,
   () => {
-    if (props.currentPage !== Number(router.currentRoute.value.query.page)) {
+    if (
+      props.currentPage &&
+      props.currentPage !== Number(route.query.page)
+    ) {
+      let query: LocationQuery = { page: `${props.currentPage}` }
+      if (props.currentPage === 1) {
+        query = {}
+      }
       router.push({
-        path: router.currentRoute.value.path,
-        query: {
-          page: props.currentPage,
-        },
+        path: route.path,
+        query,
       });
     }
     if (catalogElement.value) {
@@ -44,10 +52,10 @@ watch(
 );
 
 watch(
-  () => router.currentRoute.value.query.page,
-  (newPage: string | undefined | any) => {
-    if (props.currentPage !== Number(newPage)) {
-      emit('update:currentPage', Number(newPage));
+  () => route.path,
+  (newPath: string) => {
+    if (newPath === '/' && !route.query.page) {
+      emit('update:currentPage', 1);
     }
   },
   { deep: true, immediate: true }
