@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
+// @ts-ignore
 import useCataas from '@/composables/useCataas';
 import CatalogList from '@/components/catalog/CatalogList.vue';
 import PaginationBar from '@/components/catalog/PaginationBar.vue';
