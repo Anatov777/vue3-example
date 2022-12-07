@@ -1,0 +1,1 @@
+function r(){return{getCats:async()=>{try{return(await fetch("https://cataas.com/api/cats?limit=1000")).json()}catch(t){console.log(t.message)}},getCatSay:async(t="Hello")=>{try{const s=`https://cataas.com/cat/says/${t}?json=true`;return(await fetch(s)).json()}catch(s){console.log(s.message)}}}}export{r as u};
