@@ -1,22 +1,25 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import type { Ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import type { LocationQuery  } from 'vue-router';
+import type {
+  LocationQuery,
+  Router,
+  RouteLocationNormalizedLoaded,
+} from 'vue-router';
+import type { Ref } from 'vue';
+import type { CatModel } from '@/models/CataasModel';
 
-const route = useRoute()
-const router = useRouter()
+const route: RouteLocationNormalizedLoaded = useRoute();
+const router: Router = useRouter();
 
 interface Props {
-  list: any[];
-  id?: string;
+  list: CatModel[];
   currentPage?: number;
   itemsPerPage?: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  list: [] as any,
-  id: '_id',
+  list: () => [],
   currentPage: 1,
   itemsPerPage: 10,
 });
@@ -30,13 +33,10 @@ const emit = defineEmits<{
 watch(
   () => props.currentPage,
   () => {
-    if (
-      props.currentPage &&
-      props.currentPage !== Number(route.query.page)
-    ) {
-      let query: LocationQuery = { page: `${props.currentPage}` }
+    if (props.currentPage && props.currentPage !== Number(route.query.page)) {
+      let query: LocationQuery = { page: `${props.currentPage}` };
       if (props.currentPage === 1) {
-        query = {}
+        query = {};
       }
       router.push({
         path: route.path,
@@ -61,11 +61,11 @@ watch(
   { deep: true, immediate: true }
 );
 
-const currentList = computed<any[]>(() => {
+const currentList = computed<CatModel[]>(() => {
   if (!props.list.length) {
     return [];
   }
-  const newList: any[] = [];
+  const newList: CatModel[] = [];
   const startIndex: number = (props.currentPage - 1) * props.itemsPerPage;
   const finalIndex: number = startIndex + props.itemsPerPage;
 
@@ -80,9 +80,9 @@ const currentList = computed<any[]>(() => {
 </script>
 <template>
   <div v-if="currentList.length" class="catalog-list" ref="catalogElement">
-    <div v-for="item in currentList" :key="item[id]" class="catalog-list__item">
+    <div v-for="item in currentList" :key="item._id" class="catalog-list__item">
       <img
-        :src="`https://cataas.com/cat/${item[id]}`"
+        :src="`https://cataas.com/cat/${item._id}`"
         width="300"
         height="400"
         class="preloader"

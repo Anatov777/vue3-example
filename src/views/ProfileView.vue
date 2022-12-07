@@ -10,7 +10,8 @@ const { getCatSay } = useCataas();
 const catData: Ref<any> = ref(null);
 
 onMounted(async () => {
-  catData.value = await getCatSay(`Hello, ${user.value.user_metadata.name}`);
+  const userName: string = user.value?.user_metadata.name;
+  catData.value = await getCatSay(`Hello, ${userName}`);
 });
 </script>
 

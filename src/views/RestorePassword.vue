@@ -1,21 +1,21 @@
 <script setup lang="ts">
-import useAuthUser from "@/composables/UseAuthUser";
-import { ref } from "vue";
-import type { Ref } from "vue";
+import useAuthUser from '@/composables/UseAuthUser';
+import { ref } from 'vue';
+import type { Ref } from 'vue';
 
-import PasswordConfirmationFieldGroup from "@/components/forms/PasswordConfirmationFieldGroup.vue";
+import PasswordConfirmationFieldGroup from '@/components/forms/PasswordConfirmationFieldGroup.vue';
 
 const { updateUser } = useAuthUser();
 
-const newPassword: Ref<string> = ref("");
+const newPassword: Ref<string> = ref('');
 const isValidForm: Ref<boolean> = ref(false);
 
-const handlePasswordUpdate = async () => {
+const handlePasswordUpdate = async (): Promise<void> => {
   if (isValidForm.value) {
     await updateUser({ password: newPassword.value });
   }
 };
-const onUpdatePasswordConfirmationFormValidation = (isValid: boolean) => {
+const onUpdatePasswordConfirmationFormValidation = (isValid: boolean): void => {
   isValidForm.value = isValid;
 };
 </script>

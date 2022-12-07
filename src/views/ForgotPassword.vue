@@ -1,23 +1,28 @@
 <script setup lang="ts">
-import useAuthUser from "@/composables/UseAuthUser";
-import { ref, reactive, computed } from "vue";
+import { ref, reactive, computed } from 'vue';
+import { useVuelidate } from '@vuelidate/core';
+import { helpers, required, email } from '@vuelidate/validators';
 
-import { useVuelidate } from "@vuelidate/core";
-import { helpers, required, email } from "@vuelidate/validators";
+import useAuthUser from '@/composables/UseAuthUser';
+import BaseInput from '@/components/forms/BaseInput.vue';
 
-import BaseInput from "@/components/forms/BaseInput.vue";
+import type { Ref } from 'vue';
 
 const { sendPasswordRestEmail } = useAuthUser();
 
-const form = ref({
-  email: "",
+interface ForgotPasswordModel {
+  email: string;
+}
+
+const form: Ref<ForgotPasswordModel> = ref({
+  email: '',
 });
 
 const rules = computed(() => ({
   form: {
     email: {
-      required: helpers.withMessage("Поле не заполнено", required),
-      email: helpers.withMessage("Неверный формат Email", email),
+      required: helpers.withMessage('Поле не заполнено', required),
+      email: helpers.withMessage('Неверный формат Email', email),
     },
   },
 }));
@@ -27,9 +32,9 @@ const state = reactive({
 });
 const v$ = useVuelidate(rules, state);
 
-const handlePasswordReset = async () => {
+const handlePasswordReset  = async (): Promise<void> => {
   try {
-    const isValidForm = await v$.value.$validate();
+    const isValidForm: boolean = await v$.value.$validate();
     if (isValidForm) {
       await sendPasswordRestEmail(form.value.email);
       alert(`Password reset email sent to: ${form.value.email}`);

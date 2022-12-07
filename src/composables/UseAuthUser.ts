@@ -1,23 +1,24 @@
-import useSupabase from "@/composables/UseSupabase";
-import { ref } from "vue";
+import useSupabase from '@/composables/UseSupabase';
+import { ref } from 'vue';
+import type { Ref } from 'vue';
+import type { User } from '@supabase/supabase-js';
+import type { LoginModel, RegisterModel, AuthUser } from '@/models/AuthModel';
 
-// user is set outside of the useAuthUser function
-// so that it will act as global state and always refer to a single user
-const user: any = ref(null);
+const user: Ref<User | null> = ref(null);
 
-export default function useAuthUser() {
+export default function useAuthUser(): AuthUser {
   const { supabase } = useSupabase();
 
-  /**
-   * Login with email and password
-   */
-  const login = async ({ email, password }: any) => {
-    const { user, error } = await supabase.auth.signInWithPassword({
+  const login = async ({
+    email,
+    password,
+  }: LoginModel): Promise<User | null> => {
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
     if (error) throw error;
-    return user;
+    return data.user;
   };
 
   /**
@@ -25,73 +26,53 @@ export default function useAuthUser() {
    * Useful for logging in after email confirmations
    */
   const loginWithRefreshToken = async (token: any) => {
-    const { user, error } = await supabase.auth.signInWithOAuth({
-      refreshToken: token,
-    });
-    if (error) throw error;
-    return user;
+    // const { user, error } = await supabase.auth.signInWithOAuth({
+    //   refreshToken: token,
+    // });
+    // if (error) throw error;
+    // return user;
   };
 
-  /**
-   * Logout
-   */
-  const logout = async () => {
-    const { error } = supabase.auth.signOut();
+  const logout = async (): Promise<void> => {
+    const { error } = await supabase.auth.signOut();
     if (error) throw error;
   };
 
-  /**
-   * Check if the user is logged in or not
-   */
-  const isLoggedIn = () => {
+  const isLoggedIn = (): boolean => {
     return !!user.value;
   };
 
-  /**
-   * Register
-   */
-  const register = async ({ email, password, ...meta }: any) => {
-    const { user, error } = await supabase.auth.signUp({
+  const register = async ({
+    email,
+    password,
+    ...meta
+  }: RegisterModel): Promise<User | null> => {
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        //arbitrary meta data is passed as the second argument under a data key
-        // to the Supabase signUp method
         data: meta,
-        // the to redirect to after the user confirms their email
         emailRedirectTo: `${window.location.origin}/profile?fromEmail=registrationConfirmation"`,
       },
     });
     if (error) throw error;
-    return user;
+    return data.user;
   };
 
-  /**
-   * Update user email, password, or meta data
-   */
-  const updateUser = async (data: any) => {
-    const { user, error } = await supabase.auth.updateUser(data);
+  const updateUser = async (dataToUpdate: any) => {
+    const { data, error } = await supabase.auth.updateUser(dataToUpdate);
     if (error) throw error;
-    return user;
+    return data.user;
   };
 
-  /**
-   * Send user an email to reset their password
-   * (ie. support "Forgot Password?")
-   */
-  const sendPasswordRestEmail = async (email: any) => {
-    const { user, error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: "http://localhost:5173/password-reset",
+  const sendPasswordRestEmail = async (email: string) => {
+    const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: 'http://localhost:5173/password-reset',
     });
     if (error) throw error;
-    return user;
+    return data;
   };
 
-  /**
-   * Will be useful for informing the application what to do
-   * when Supabase redirects a user back to app
-   * after confirming email address
-   */
   const maybeHandleEmailConfirmation = async (route: any) => {};
 
   return {

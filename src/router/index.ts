@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import useAuthUser from "@/composables/UseAuthUser";
-import type { RouteRecordRaw } from "vue-router";
+import type { RouteRecordRaw, Router, RouteLocationNormalized } from "vue-router";
 
-const router = createRouter({
+const router: Router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
@@ -58,7 +58,7 @@ const router = createRouter({
   ] as RouteRecordRaw[],
 });
 
-router.beforeEach((to) => {
+router.beforeEach((to: RouteLocationNormalized) => {
   const { isLoggedIn } = useAuthUser();
   if (
     !isLoggedIn() &&

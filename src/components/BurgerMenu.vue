@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import IconBurger from '@/components/icons/IconBurger.vue';
-import IconClose from '@/components/icons/IconClose.vue';
-
 import { ref, computed, onUnmounted } from 'vue';
 import type { Ref } from 'vue';
+import type { BurgerMenuItem } from '@/types/BurgerMenuTypes';
+
+import IconBurger from '@/components/icons/IconBurger.vue';
+import IconClose from '@/components/icons/IconClose.vue';
 
 interface Props {
   isLoggedIn: boolean;
@@ -14,9 +15,9 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const isShowBurgerMenu: Ref<boolean> = ref(false);
-const burgerMenu = ref(null);
+const burgerMenu: Ref<HTMLDivElement | null> = ref(null);
 
-const burgerMenuItems = computed<any>(() => {
+const burgerMenuItems = computed<BurgerMenuItem[]>(() => {
   const items = [
     {
       label: 'burger-item-1',
@@ -52,11 +53,11 @@ const burgerMenuItems = computed<any>(() => {
   return items;
 });
 
-const toggleBurgerMenu = () => {
+const toggleBurgerMenu = (): void => {
   isShowBurgerMenu.value = !isShowBurgerMenu.value;
 };
 
-const clickListenerHandler = (event: any) => {
+const clickListenerHandler = (event: Event): void => {
   if (
     isShowBurgerMenu.value &&
     (event.target as HTMLElement).closest('.burger-menu') !== burgerMenu.value
@@ -67,7 +68,7 @@ const clickListenerHandler = (event: any) => {
 
 document.body.addEventListener('click', clickListenerHandler);
 
-onUnmounted(() =>
+onUnmounted((): void =>
   document.body.removeEventListener('click', clickListenerHandler)
 );
 </script>
@@ -107,7 +108,7 @@ onUnmounted(() =>
     </Transition>
   </div>
 </template>
-<style lang="postcss">
+<style scoped lang="postcss">
 .burger-menu {
   &__menu {
     @apply fill-gray-200;

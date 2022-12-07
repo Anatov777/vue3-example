@@ -1,19 +1,20 @@
 <script setup lang="ts">
+import { vResize } from '@/directives/vResize';
+import { ref, onMounted } from 'vue';
+import { provide } from 'vue';
+
+import type { Ref } from 'vue';
+
 import AppHeader from '@/components/AppHeader.vue';
 import AppFooter from '@/components/AppFooter.vue';
 
-import { vResize } from '@/directives/vResize';
-import { ref, onMounted } from 'vue';
-import type { Ref } from 'vue';
-
-import { provide } from 'vue';
 
 const clientWidth: Ref<number | null> = ref(null);
 const clientHeight: Ref<number | null> = ref(null);
 
 provide('clientWidth', clientWidth);
 
-onMounted(() => {
+onMounted((): void => {
   clientWidth.value = document.body.clientWidth;
   clientHeight.value = document.body.clientHeight;
 });

@@ -1,10 +1,12 @@
-export const vResize: any = {
-    mounted: (element: any, binding: any) => {
-        const onResizeCallback = binding.value;
-        window.addEventListener('resize', () => {
-            const width = document.documentElement.clientWidth;
-            const height = document.documentElement.clientHeight;
-            onResizeCallback({ width, height });
-        })
-    }
-}
+import type { Directive, DirectiveBinding } from "vue";
+
+export const vResize: Directive = {
+  mounted: (element: HTMLElement, binding: DirectiveBinding) => {
+    const onResizeCallback: any = binding.value;
+    window.addEventListener('resize', () => {
+      const width: number = document.documentElement.clientWidth;
+      const height: number = document.documentElement.clientHeight;
+      onResizeCallback({ width, height });
+    });
+  },
+};

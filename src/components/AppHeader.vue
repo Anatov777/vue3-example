@@ -6,11 +6,11 @@ import { computed } from 'vue';
 import type { Ref } from 'vue';
 import { inject } from 'vue';
 
-const clientWidth: Ref<number | null> | undefined = inject('clientWidth')
+const clientWidth: Ref<number | null> | undefined = inject('clientWidth');
 
 const isShowBurgerMenu = computed<boolean>(() => {
   if (clientWidth && clientWidth.value! < 640) {
-    return true
+    return true;
   }
   return false;
 });
@@ -57,7 +57,7 @@ const { isLoggedIn } = useAuthUser();
     </nav>
   </header>
 </template>
-<style lang="postcss">
+<style scoped lang="postcss">
 .header {
   @apply bg-gray-700 text-white;
   &__menu {

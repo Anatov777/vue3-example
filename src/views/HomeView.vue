@@ -1,25 +1,30 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import type { Ref } from 'vue';
+import { useRoute } from 'vue-router';
 import useCataas from '@/composables/useCataas';
 import CatalogList from '@/components/catalog/CatalogList.vue';
 import PaginationBar from '@/components/catalog/PaginationBar.vue';
 
-import { useRoute } from 'vue-router';
+import type { Ref } from 'vue';
+import type { CatModel } from '@/models/CataasModel';
+import type { RouteLocationNormalizedLoaded  } from 'vue-router';
 
-const route = useRoute();
+const route: RouteLocationNormalizedLoaded = useRoute();
 
 const { getCats } = useCataas();
 
-const cats: Ref<any[]> = ref([]);
+const cats: Ref<CatModel[] | undefined> = ref([]);
 const currentPage: Ref<number> = ref(1);
 const perPage: Ref<number> = ref(10);
 
 const lastPage = computed<number>(() => {
-  return Math.ceil(cats.value.length / perPage.value);
+  if (cats.value) {
+    return Math.ceil(cats.value.length / perPage.value);
+  }
+  return 1;
 });
 
-onMounted(async () => {
+onMounted(async (): Promise<void> => {
   if (route.query.page) {
     currentPage.value = Number(route.query.page);
   }

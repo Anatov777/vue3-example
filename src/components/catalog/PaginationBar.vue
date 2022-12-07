@@ -26,7 +26,7 @@ const middlePageNumber = computed<number>(() => {
 });
 
 const visiblePages = computed<number[]>(() => {
-  const pages = [];
+  const pages: number[] = [];
 
   if (props.lastPage < 8) {
     for (let i = 1; i <= props.lastPage; i++) {
@@ -76,15 +76,15 @@ const visiblePages = computed<number[]>(() => {
   return pages;
 });
 
-const getActualPages = () => {
-  const pages = [];
+const getActualPages = (): number[] => {
+  const pages: number[] = [];
   for (let i = props.activePage - 2; i <= props.activePage + 2; i++) {
     pages.push(i);
   }
   return pages;
 };
 
-const hasMarginRight = (pageNumber: number) => {
+const hasMarginRight = (pageNumber: number): boolean => {
   return (
     props.lastPage >= 8 &&
     ((pageNumber === 1 && props.activePage > 5) ||
@@ -93,7 +93,7 @@ const hasMarginRight = (pageNumber: number) => {
         middlePageNumber.value < props.lastPage - 4))
   );
 };
-const hasMarginLeft = (pageNumber: number) => {
+const hasMarginLeft = (pageNumber: number): boolean => {
   return (
     props.lastPage >= 8 &&
     ((pageNumber === props.lastPage &&
@@ -102,7 +102,7 @@ const hasMarginLeft = (pageNumber: number) => {
         props.activePage < middlePageNumber.value - 2))
   );
 };
-const isHidden = (pageNumber: number) => {
+const isHidden = (pageNumber: number): boolean => {
   return (
     isLeftActualPageNumber(pageNumber) ||
     isRightActualPageNumber(pageNumber) ||
@@ -113,19 +113,19 @@ const isHidden = (pageNumber: number) => {
     isPageNumberNotActual(pageNumber)
   );
 };
-const isLeftActualPageNumber = (pageNumber: number) => {
+const isLeftActualPageNumber = (pageNumber: number): boolean => {
   return (
     pageNumber === props.activePage - 2 && props.activePage !== props.lastPage
   );
 };
-const isRightActualPageNumber = (pageNumber: number) => {
+const isRightActualPageNumber = (pageNumber: number): boolean => {
   return (
     pageNumber === props.activePage + 2 &&
     pageNumber !== props.lastPage &&
     props.activePage !== 1
   );
 };
-const isMiddlePageNumber = (pageNumber: number) => {
+const isMiddlePageNumber = (pageNumber: number): boolean => {
   return (
     pageNumber === middlePageNumber.value &&
     props.activePage - 1 !== middlePageNumber.value &&
@@ -134,26 +134,26 @@ const isMiddlePageNumber = (pageNumber: number) => {
     props.lastPage > 5
   );
 };
-const isFirstPageNumber = (pageNumber: number) => {
+const isFirstPageNumber = (pageNumber: number): boolean => {
   return (
     pageNumber === 1 &&
     props.activePage > 2 &&
     props.activePage !== props.lastPage
   );
 };
-const isPageNumberMoreThanThree = (pageNumber: number) => {
+const isPageNumberMoreThanThree = (pageNumber: number): boolean => {
   return (
     props.activePage < 3 && pageNumber > 3 && pageNumber !== props.lastPage
   );
 };
-const isPageNumberBeforeLastThree = (pageNumber: number) => {
+const isPageNumberBeforeLastThree = (pageNumber: number): boolean => {
   return (
     props.activePage === props.lastPage &&
     pageNumber < props.lastPage - 2 &&
     pageNumber !== 1
   );
 };
-const isPageNumberNotActual = (pageNumber: number) => {
+const isPageNumberNotActual = (pageNumber: number): boolean => {
   return (
     (pageNumber < props.activePage - 1 || pageNumber > props.activePage + 1) &&
     pageNumber !== props.lastPage &&
@@ -162,10 +162,10 @@ const isPageNumberNotActual = (pageNumber: number) => {
   );
 };
 
-const onPageClick = (page: number) => {
+const onPageClick = (page: number): void => {
   emit('update:activePage', page);
 };
-const setActivePage = (page: number) => {
+const setActivePage = (page: number): void => {
   emit('update:activePage', page);
 };
 </script>

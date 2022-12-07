@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue';
 import type { Ref } from 'vue';
 import { v4 as uuidv4 } from 'uuid';
+import type { ErrorObject } from '@vuelidate/core';
 
 type InputType = 'text' | 'number' | 'tel' | 'email' | 'password';
 
@@ -12,7 +13,7 @@ interface Props {
   inputType?: InputType;
   placeholderText?: string;
   hasError: boolean;
-  errors: any[];
+  errors: ErrorObject[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -24,8 +25,8 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emit = defineEmits<{
-  (event: 'update:modelValue', inputValue: any): void;
-  (event: 'blur', value: any): void;
+  <InputValueType>(event: 'update:modelValue', inputValue: InputValueType): void;
+  <BlurValueType>(event: 'blur', value: BlurValueType): void;
 }>();
 
 const isShowPassword: Ref<boolean> = ref(false);
@@ -38,7 +39,7 @@ const initInputType = computed<string>(() => {
 });
 
 const onInput = async (event: InputEvent | Event) => {
-  const input = event.target as HTMLInputElement;
+  const input: HTMLInputElement = event.target as HTMLInputElement;
   emit('update:modelValue', input.value);
 };
 const onBlur = async (event: FocusEvent) => {

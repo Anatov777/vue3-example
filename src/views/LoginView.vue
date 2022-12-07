@@ -6,12 +6,16 @@ import { useRouter } from 'vue-router';
 import { useVuelidate } from '@vuelidate/core';
 import { helpers, required, minLength, email } from '@vuelidate/validators';
 
+import type { Router } from 'vue-router';
+import type { LoginModel } from '@/models/AuthModel';
+import type { Ref } from 'vue';
+
 import BaseInput from '@/components/forms/BaseInput.vue';
 
-const router = useRouter();
+const router: Router = useRouter();
 const { login } = useAuthUser();
 
-const form = ref({
+const form: Ref<LoginModel> = ref({
   email: '',
   password: '',
 });
@@ -39,7 +43,7 @@ const v$ = useVuelidate(rules, state);
 
 const handleLogin = async () => {
   try {
-    const isValidForm = await v$.value.$validate();
+    const isValidForm: boolean = await v$.value.$validate();
     if (isValidForm) {
       await login(form.value);
       router.push({ name: 'Profile' });
