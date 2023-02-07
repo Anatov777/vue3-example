@@ -24,4 +24,6 @@ onMounted(async () => {
       class="preloader mx-auto"
     />
   </div>
+  <div v-else-if="user">Hello, {{ user.user_metadata.name }}</div>
+  <div v-else>Hello</div>
 </template>

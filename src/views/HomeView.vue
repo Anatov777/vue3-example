@@ -8,7 +8,7 @@ import PaginationBar from '@/components/catalog/PaginationBar.vue';
 
 import type { Ref } from 'vue';
 import type { CatModel } from '@/models/CataasModel';
-import type { RouteLocationNormalizedLoaded  } from 'vue-router';
+import type { RouteLocationNormalizedLoaded } from 'vue-router';
 
 const route: RouteLocationNormalizedLoaded = useRoute();
 
@@ -35,11 +35,16 @@ onMounted(async (): Promise<void> => {
 <template>
   <div>
     <h1 class="text-center mb-10">Каталог</h1>
-    <CatalogList v-model:current-page="currentPage" :list="cats" />
-    <PaginationBar
-      v-model:active-page="currentPage"
-      :lastPage="lastPage"
-      :per-page="perPage"
-    />
+    <div v-if="cats?.length">
+      <CatalogList v-model:current-page="currentPage" :list="cats" />
+      <PaginationBar
+        v-model:active-page="currentPage"
+        :lastPage="lastPage"
+        :per-page="perPage"
+      />
+    </div>
+    <div v-else class="flex justify-center">
+      Не удалось получить изображения
+    </div>
   </div>
 </template>
