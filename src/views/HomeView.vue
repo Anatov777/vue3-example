@@ -44,7 +44,7 @@ onMounted(async (): Promise<void> => {
       />
     </div>
     <div v-else class="flex justify-center">
-      Не удалось получить изображения
+      Загрузка картинок...
     </div>
   </div>
 </template>
